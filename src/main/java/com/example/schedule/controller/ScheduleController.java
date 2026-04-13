@@ -1,13 +1,14 @@
 package com.example.schedule.controller;
 
-import com.example.schedule.dto.CreateScheduleRequest;
-import com.example.schedule.dto.CreateScheduleResponse;
-import com.example.schedule.dto.GetScheduleResponse;
+import com.example.schedule.dto.*;
 import com.example.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.ReactiveOffsetScrollPositionHandlerMethodArgumentResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,5 +27,19 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
 
     }
+
+    @GetMapping("/schdules")
+    public ResponseEntity<List<GetScheduleResponse>> getAllSchedules(){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll());
+
+    }
+    @PatchMapping("/scheduls/{scheduleId}")
+    public ResponseEntity<UpdateScheduleResponse> updateSchedule(
+            @PathVariable String scheduleId,
+            @RequestBody UpdateScheduleRequest request
+            ){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request));
+    }
+
 
 }
