@@ -1,5 +1,5 @@
 # 일정 관리 서버
-- Spring boot와 JPA를 활용한 일정관리 API서버입니다.
+- Spring boot와 JPA를 활용한 일정관리 API서버제작
 
 ## I. API 명세서
 
