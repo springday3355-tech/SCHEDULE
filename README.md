@@ -1,36 +1,17 @@
-# API 명세서
+# 일정 관리 서버
+- Spring boot와 JPA를 활용한 일정관리 API서버입니다.
 
-## 필요한 기능
-- 일정 등록,조회,수정,삭제
+## I. API 명세서
 
-## 필요한 데이터
-- 일정 제목, 일정 내용, 작성자명, 비밀번호, 작성/수정일(날짜&시간 포함)
-
-## Lv.1 (일정생성)
-- 각 일정의 고유 식별자를 자동으로 생성해 관리
-- 최초 생성시 수정일과 작성일은 동일함
-- 작성일,수정일 필드는 JPA Auditing을 활용해 적용함
-- API응답에 비밀번호 제외
-
-## LV.2 (일정 조회)
-1. 전체일정(다 건) 조회
-- 작성자명 기준으로 등록된 일정목록 전체 조회
-- 하나의 API로 작성
-- 수정일 기준 내림차순으로 정렬
-- API응답에 비밀번호 제외
-
-2. 선택 일정(단 건) 조회
-- 선택한 일전 단 건 조회
-- 일정의 고유 식별자를 사용해 조회
-- API응답에 비밀번호 제외
+| 기능 | Method | URL | Request Body | Reponse Body | 상태코드 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 일정 생성 | POST | `/schedules` | `title`, `contents`, `name`, `password`| 생성된 일정 정보 | 201|
+| 일정 단건 조회 | GET | `/schedules/{scheduleId}` | - | 일정 상세 정보 | 200 |
+| 일정 전체 조회 | GET |`/schedules`| - | 일정 목록 | 200 |
+| 일정 수정 | PATCH | `/schedules/{scheduleId}` | `title`, `name` | 수정된 일정 정보 | 200 |
+| 일정 삭제 | DELETE | `/schedules/{scheduleId}`| `password` (JSON) | - | 204 |
+ 
 
 
-## Lv.3 (일정 수정)
-- 선택한 일정내용중 title,name만 수정가능
-- 서버에 일정 수정 요청할 때 비밀번호 같이 전달
-- 작성일은 수정X, 수정일은 수정완료시 수정한 시점으로 변경
-- API응답에 비밀번호 제외
-
-## LV.4 (일정 삭제)
-- 선택한 일정 삭제
-- 서버에 삭제 요청할 때 비밀번호 같이 전달함
+## II. ERD
+<img width="594" height="269" alt="image" src="https://github.com/user-attachments/assets/182424a8-e610-4a18-807b-e9e354170580" />
