@@ -9,6 +9,5 @@ public class CreateScheduleRequest {
     private String contents;
     private String name;
     private String password;
-    private Integer date;
 
 }

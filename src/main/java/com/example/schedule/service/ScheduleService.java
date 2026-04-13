@@ -21,15 +21,14 @@ public class ScheduleService {
     public CreateScheduleResponse save(CreateScheduleRequest request) {
         Schedule schedule = new Schedule(request.getTitle(),
                 request.getContents(), request.getName(),
-                request.getPassword(), request.getDate());
+                request.getPassword());
         Schedule saveSchedule = scheduleRepository.save(schedule);
        return new CreateScheduleResponse(
                 saveSchedule.getId(),
                 saveSchedule.getTitle(),
                 saveSchedule.getContents(),
                 saveSchedule.getName(),
-                saveSchedule.getPassword(),
-                saveSchedule.getDate()
+                saveSchedule.getPassword()
         );
 
     }
@@ -43,8 +42,8 @@ public class ScheduleService {
                 schedule.getTitle(),
                 schedule.getContents(),
                 schedule.getName(),
-                schedule.getPassword(),
-                schedule.getDate()
+                schedule.getCreatedAt(),
+                schedule.getUpdateAt()
         );
 
 
@@ -60,8 +59,8 @@ public class ScheduleService {
                     schedule.getTitle(),
                     schedule.getContents(),
                     schedule.getName(),
-                    schedule.getPassword(),
-                    schedule.getDate()
+                    schedule.getCreatedAt(),
+                    schedule.getUpdateAt()
             );
             dtos.add(dto);
         }
@@ -69,7 +68,7 @@ public class ScheduleService {
 
     }
     @Transactional
-    public UpdateScheduleResponse update(String scheduleId, UpdateScheduleRequest request) {
+    public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request) {
         Schedule schedule = scheduleRepository.findById(Long.valueOf(scheduleId)).orElseThrow(
                 () -> new IllegalStateException("없는 일정 입니다.")
         );
@@ -84,4 +83,21 @@ public class ScheduleService {
 
 
     }
-}
+    @Transactional
+    public void delete(Long scheduleId, String password) {
+        // 1. 일정 조회
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정 입니다.")
+        );
+
+        // 2. 비밀번호 검증(DB에 저장된것과 입력받는것)
+        if (!schedule.getPassword().equals(password)){
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 3. 일치하면 삭제
+        scheduleRepository.delete(schedule);
+    }
+    
+    
+    }
